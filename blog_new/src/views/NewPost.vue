@@ -22,8 +22,11 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-const route = useRoute()
-const router=useRouter()
+const router = useRouter()
+if (!localStorage.getItem('Authorization')) {
+    alert('请登录')
+    router.push('/login')
+}
 const post = ref({
     title: '',
     content: '',
@@ -31,19 +34,22 @@ const post = ref({
     brief: ''
 })
 const updatePost=()=>{
-    axios.post('https://0031400.xyz/api/blog/newpost',{
-        title:post.value.title,
-        brief:post.value.brief,
-        content:post.value.content
-    },{headers:{'Authorization':localStorage.getItem('Authorization')}}).then(res=>{
-        if (res.data.status) {
-            console.log(res.data);
-            alert('提交失败')
-        }else{
-            alert('提交成功')
-            router.push('/dash')
-        }
-    })
+    if (confirm('确认发布?')) {
+        
+        axios.post('https://0031400.xyz/api/blog/newpost',{
+            title:post.value.title,
+            brief:post.value.brief,
+            content:post.value.content
+        },{headers:{'Authorization':localStorage.getItem('Authorization')}}).then(res=>{
+            if (res.data.status) {
+                console.log(res.data);
+                alert('提交失败')
+            }else{
+                alert('提交成功')
+                router.push('/dash')
+            }
+        })
+    }
 }
 </script>
 
@@ -114,6 +120,7 @@ input {
 .dash-detail-content-input {
     font-size: 24px;
     margin-top: 10px;
+    font-family:'Courier New', Courier, monospace;
 }
 
 .dash-detail-title-input,

@@ -17,8 +17,8 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const router = useRouter()
 const posts = ref()
+const router = useRouter()
 if (!localStorage.getItem('Authorization')) {
     alert('请登录')
     router.push('/login')

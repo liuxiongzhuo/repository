@@ -27,7 +27,11 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
-const router=useRouter()
+const router = useRouter()
+if (!localStorage.getItem('Authorization')) {
+    alert('请登录')
+    router.push('/login')
+}
 const post = ref({
     title: '',
     content: '',
@@ -37,34 +41,40 @@ const post = ref({
 axios.get('https://0031400.xyz/api/blog/query?id=' + route.query.id).then(response => {
     post.value = response.data.data[0];
 })
-const deletePost=()=>{
-    axios.get('https://0031400.xyz/api/blog/deletePost?id='+post.value.id,{headers:{'Authorization':localStorage.getItem('Authorization')}}).then(res=>{
-        if (res.data.status) {
-            console.log(res.data);
-            alert('删除失败')
-        }else{
-            alert('删除成功')
-            router.push('/dash')
-        }
-    })
+const deletePost = () => {
+    if (confirm('确认删除')) {
+
+        axios.get('https://0031400.xyz/api/blog/deletePost?id=' + post.value.id, { headers: { 'Authorization': localStorage.getItem('Authorization') } }).then(res => {
+            if (res.data.status) {
+                console.log(res.data);
+                alert('删除失败')
+            } else {
+                alert('删除成功')
+                router.push('/dash')
+            }
+        })
+    }
 }
-const updatePost=()=>{
-    axios.post('https://0031400.xyz/api/blog/updatepost',{
-        title:post.value.title,
-        date:post.value.date,
-        brief:post.value.brief,
-        id:post.value.id,
-        content:post.value.content,
-        category:post.value.category
-    },{headers:{'Authorization':localStorage.getItem('Authorization')}}).then(res=>{
-        if (res.data.status) {
-            console.log(res.data);
-            alert('更新失败')
-        }else{
-            alert('更新成功')
-            router.push('/dash')
-        }
-    })
+const updatePost = () => {
+    if (confirm('确认更新?')) {
+
+        axios.post('https://0031400.xyz/api/blog/updatepost', {
+            title: post.value.title,
+            date: post.value.date,
+            brief: post.value.brief,
+            id: post.value.id,
+            content: post.value.content,
+            category: post.value.category
+        }, { headers: { 'Authorization': localStorage.getItem('Authorization') } }).then(res => {
+            if (res.data.status) {
+                console.log(res.data);
+                alert('更新失败')
+            } else {
+                alert('更新成功')
+                router.push('/dash')
+            }
+        })
+    }
 }
 </script>
 
@@ -123,6 +133,12 @@ const updatePost=()=>{
     .dash-detail-content-input {
         width: 100%;
     }
+}
+.dash-detail-title-input,
+.dash-detail-date-input,
+.dash-detail-brief-input,
+.dash-detail-content-input {
+    font-family: 'Courier New', Courier, monospace;
 }
 
 input {

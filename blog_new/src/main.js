@@ -8,7 +8,10 @@ import Backgroud2 from './components/Backgroud2.vue'
 import Backgroud3 from './components/Backgroud3.vue'
 import Sidebar from './components/Sidebar.vue'
 import DashSidebar from './components/DashSidebar.vue'
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
 const app=createApp(App)
+app.use(Viewer)
 app.use(router)
 app.component('Sidebar',Sidebar)
 app.component('DashSidebar',DashSidebar)

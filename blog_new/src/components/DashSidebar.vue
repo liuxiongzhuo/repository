@@ -17,7 +17,7 @@
         <router-link to="/dash" class="link">文章列表</router-link>
       </div>
       <div class="link-box">
-        <router-link to="/dashnewpost" class="link">撰写文章</router-link>
+        <router-link to="/newpost" class="link">撰写文章</router-link>
       </div>
     </div>
   </div>
